@@ -13,7 +13,7 @@ async function generateLinkedinPost() {
       {
         role: "system",
         content:
-          "Suggest a trending topic related to stuff like SaMD in healthcare, AI in healthcare, The efficiencies that AI can have in healthcare and workflows. All this type of topics. You can be creative.",
+          "You have a startup called BloodFlow and BloodFlow will be attending SINFO 32 which the biggest free tech conference. BloodFlow will be there in the Unicorn Factory Lisboa stand on 21 of February. This is your topic!",
       },
     ],
     max_tokens: 150,
@@ -35,7 +35,7 @@ async function generateLinkedinPost() {
 
   const imagePostResponse = await openai.images.generate({
     model: "dall-e-3",
-    prompt: `Create a professional LinkedIn-style image for a post about: ${topic}`,
+    prompt: `Create a professional LinkedIn-style image for a post about startup BloodFlow and SINFO 32 tech conference. Dont write anything in the image. Just visual content.`,
     size: "1024x1024",
   });
   const image = imagePostResponse.data[0].url;
