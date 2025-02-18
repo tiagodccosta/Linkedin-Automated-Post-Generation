@@ -12,30 +12,35 @@ async function generateLinkedinPost() {
     messages: [
       {
         role: "system",
-        content:
-          "You have a startup called BloodFlow and BloodFlow will be attending SINFO 32 which the biggest free tech conference. BloodFlow will be there in the Unicorn Factory Lisboa stand on 21 of February. This is your topic!",
+        content: "Give me one topic for a Professional and with a learning for my community Linkedin post. Im the CEO of a Healthtech startup called BloodFlow that its main goal is to use AI for automating blood test analysis and workflow with Artificial Inteligence."
       },
     ],
-    max_tokens: 150,
+    max_tokens: 50,
   });
 
   const topic = topicOfPost.choices[0].message.content;
+  console.log(topic);
 
   const postContentResponse = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "system",
-        content: `Write an engaging LinkedIn post about: ${topic}`,
+        content: `Write an engaging, professional and food for tought LinkedIn post about: ${topic}
+                  
+
+                  Be straight to the point to be too long.
+                  `,
       },
     ],
-    max_tokens: 300,
+    max_tokens: 500,
   });
   const content = postContentResponse.choices[0].message.content;
+  console.log(content);
 
   const imagePostResponse = await openai.images.generate({
     model: "dall-e-3",
-    prompt: `Create a professional LinkedIn-style image for a post about startup BloodFlow and SINFO 32 tech conference. Dont write anything in the image. Just visual content.`,
+    prompt: `Create a professional LinkedIn-style image for a post about: ${topic}`,
     size: "1024x1024",
   });
   const image = imagePostResponse.data[0].url;
@@ -52,22 +57,19 @@ function createWindow(postContent, imageUrl) {
       contextIsolation: true  // For better security
     },
   });
+  
 
-  const postContentMarked = marked(postContent);
+  const safePostContent = postContent.replace(/[\r\n]/g, '<br>');
+  const postContentMarked = marked(safePostContent);
 
-  // Log the marked content for debugging
-  console.log(postContentMarked);
-
-  // Embed both the post content and the image in the HTML
   const htmlContent = `
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Generated LinkedIn Post</title>
         <style>
           body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            padding: 10px;
           }
           h1 {
             color: #0077B5; /* LinkedIn blue */
@@ -80,7 +82,6 @@ function createWindow(postContent, imageUrl) {
         </style>
       </head>
       <body>
-        <h1>Generated LinkedIn Post</h1>
         <div>
           ${postContentMarked}
         </div>
@@ -91,9 +92,6 @@ function createWindow(postContent, imageUrl) {
 
   // Load the HTML content
   win.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
-
-  // Open Developer Tools for better debugging
-  win.webContents.openDevTools();
 
   ipcMain.once("regeneratePost", async () => {
     win.close();
@@ -111,10 +109,21 @@ async function main() {
   createWindow(postContent, imageUrl);
 }
 
-app.whenReady().then(async () => {
-  try {
-    main();
-  } catch (error) {
-    console.error("Failed to start application:", error);
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+  // WARNING: Only use this in development
+  event.preventDefault();
+  callback(true);
+});
+
+app.whenReady().then(() => {
+  const { session } = require('electron');
+  
+  // Only in development!
+  if (process.env.NODE_ENV === 'development') {
+    session.defaultSession.setCertificateVerifyProc((request, callback) => {
+      callback(0); // 0 means success
+    });
   }
+  
+  main();
 });
