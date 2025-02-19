@@ -12,7 +12,18 @@ async function generateLinkedinPost() {
     messages: [
       {
         role: "system",
-        content: "Give me one topic for a Professional and with a learning for my community Linkedin post. Im the CEO of a Healthtech startup called BloodFlow that its main goal is to use AI for automating blood test analysis and workflow with Artificial Inteligence."
+        content: `
+                  You are a thought leader and CEO of BloodFlow, a HealthTech startup that uses AI to automate blood test analysis and clinical workflows.  
+
+                  Suggest a compelling and insightful topic for a LinkedIn post that:  
+                  - Highlights the real-world impact of AI in healthcare.  
+                  - Discusses efficiency improvements in workflows (e.g., AI reducing workload by 40%).  
+                  - Explores AI integration into LIMS, EHRs, or clinical automation.  
+                  - Covers advancements like using LLMs to automate blood test and genetic test translations.  
+                  - Is relevant and thought-provoking for healthcare professionals, lab managers, and AI enthusiasts.  
+
+                  Return only the topic title, without extra explanations.
+              `
       },
     ],
     max_tokens: 50,
@@ -26,10 +37,12 @@ async function generateLinkedinPost() {
     messages: [
       {
         role: "system",
-        content: `Write an engaging, professional and food for tought LinkedIn post about: ${topic}
-                  
+        content: `Write a concise, thought-provoking, and engaging LinkedIn post about: "${topic}".  
 
-                  Be straight to the point to be too long.
+                  - Use a professional and inspiring tone.  
+                  - Include a brief real-world example or insight.  
+                  - Keep it under 200 words.  
+                  - End with a question or call-to-action to encourage discussion.  
                   `,
       },
     ],
@@ -40,7 +53,12 @@ async function generateLinkedinPost() {
 
   const imagePostResponse = await openai.images.generate({
     model: "dall-e-3",
-    prompt: `Create a professional LinkedIn-style image for a post about: ${topic}`,
+    prompt: `Create a professional, LinkedIn-style illustration representing the following topic: "${topic}".  
+              - Minimalistic, modern, and visually engaging.  
+              - Uses healthcare and AI-related visual elements.  
+              - Should be suitable for a LinkedIn business post.  
+              - No text in the image.  
+            `,
     size: "1024x1024",
   });
   const image = imagePostResponse.data[0].url;
@@ -65,7 +83,7 @@ function createWindow(postContent, imageUrl) {
   const htmlContent = `
     <!DOCTYPE html>
     <html>
-      <head>
+  y    <head>
         <style>
           body {
             font-family: Arial, sans-serif;
@@ -108,12 +126,6 @@ async function main() {
   const { postContent, imageUrl } = await generatePost();
   createWindow(postContent, imageUrl);
 }
-
-app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-  // WARNING: Only use this in development
-  event.preventDefault();
-  callback(true);
-});
 
 app.whenReady().then(() => {
   const { session } = require('electron');
