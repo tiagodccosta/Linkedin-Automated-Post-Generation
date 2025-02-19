@@ -18,7 +18,8 @@ async function generateLinkedinPost() {
                   Suggest a compelling and insightful topic for a LinkedIn post that:  
                   - Highlights the real-world impact of AI in healthcare.  
                   - Discusses efficiency improvements in workflows (e.g., AI reducing workload by 40%).  
-                  - Explores AI integration into LIMS, EHRs, or clinical automation.  
+                  - Explores AI integration into LIMS, EHRs, or clinical automation.
+                  - Explaing the integration of AI and automation for genetic testing and clinical trials in pharmaceutical settings.
                   - Covers advancements like using LLMs to automate blood test and genetic test translations.  
                   - Is relevant and thought-provoking for healthcare professionals, lab managers, and AI enthusiasts.  
 
@@ -37,12 +38,15 @@ async function generateLinkedinPost() {
     messages: [
       {
         role: "system",
-        content: `Write a concise, thought-provoking, and engaging LinkedIn post about: "${topic}".  
+        content: `
+                  "Write a concise, impactful, and engaging LinkedIn post about: '${topic}'.
 
-                  - Use a professional and inspiring tone.  
-                  - Include a brief real-world example or insight.  
-                  - Keep it under 200 words.  
-                  - End with a question or call-to-action to encourage discussion.  
+                  - Start with an attention-grabbing statement or question.
+                  - Highlight a key insight or real-world example showing how this topic is affecting healthcare today (e.g., AI integration in LIMS/EHRs, improving lab workflow efficiency, benefits in clinical trials).
+                  - Focus on the tangible benefits of AI in healthcare (e.g., saving time, reducing costs, improving patient outcomes, eliminating manual & adminstrative work, benefits as well for clinical trials).
+                  - Use a professional and inspiring tone that feels authoritative yet accessible.
+                  - Keep it under 200 words.
+                  - End with a thought-provoking question or call-to-action that encourages conversation about the future impact of AI in healthcare."
                   `,
       },
     ],
@@ -54,8 +58,8 @@ async function generateLinkedinPost() {
   const imagePostResponse = await openai.images.generate({
     model: "dall-e-3",
     prompt: `Create a professional, LinkedIn-style illustration representing the following topic: "${topic}".  
-              - Minimalistic, modern, and visually engaging.
-              - Should be suitable for a LinkedIn business post.  
+              - The design should be modern and with high level.
+              - Should be suitable for a LinkedIn business post on more of a marketing setting.  
               - No text in the image.  
             `,
     size: "1024x1024",
