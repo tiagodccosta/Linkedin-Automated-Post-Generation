@@ -54,8 +54,7 @@ async function generateLinkedinPost() {
   const imagePostResponse = await openai.images.generate({
     model: "dall-e-3",
     prompt: `Create a professional, LinkedIn-style illustration representing the following topic: "${topic}".  
-              - Minimalistic, modern, and visually engaging.  
-              - Uses healthcare and AI-related visual elements.  
+              - Minimalistic, modern, and visually engaging.
               - Should be suitable for a LinkedIn business post.  
               - No text in the image.  
             `,
@@ -82,8 +81,8 @@ function createWindow(postContent, imageUrl) {
 
   const htmlContent = `
     <!DOCTYPE html>
-    <html>
-  y    <head>
+  <html>
+    <head>
         <style>
           body {
             font-family: Arial, sans-serif;
