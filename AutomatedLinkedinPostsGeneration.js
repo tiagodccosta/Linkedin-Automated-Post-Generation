@@ -45,7 +45,7 @@ async function generateLinkedinPost() {
                   - Highlight a key insight or real-world example showing how this topic is affecting healthcare today (e.g., AI integration in LIMS/EHRs, improving lab workflow efficiency, benefits in clinical trials).
                   - Focus on the tangible benefits of AI in healthcare (e.g., saving time, reducing costs, improving patient outcomes, eliminating manual & adminstrative work, benefits as well for clinical trials).
                   - Use a professional and inspiring tone that feels authoritative yet accessible.
-                  - Keep it under 200 words.
+                  - Keep it under 150 words.
                   - End with a thought-provoking question or call-to-action that encourages conversation about the future impact of AI in healthcare."
                   `,
       },
